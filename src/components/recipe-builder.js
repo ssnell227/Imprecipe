@@ -75,8 +75,10 @@ class RecipeBuilder extends Component {
             }
         }
 
-        if (typeof inputs[0] === 'string') {
+        if (inputsKey === 'equipment') {
             inputs.splice(e.target.step, 1, e.target.value)
+        } else if (inputsKey === 'directions') {
+            inputs.splice(e.target.dataset.index, 1, e.target.value)
         } else if (e.target.placeholder === 'name') {
             console.log('firing')
             inputs[e.target.step].name = e.target.value
@@ -147,7 +149,7 @@ class RecipeBuilder extends Component {
                     rows='3'
                     cols='50'
                     onChange={this.handleChange}
-                    step={index}
+                    data-index={index}
                     name={'directions'}
                     value={this.state.directions[index]}
                     key={`directions-${index}`}

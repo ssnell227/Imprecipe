@@ -14,6 +14,7 @@ class RecipeView extends Component {
         this.toggleEdit = this.toggleEdit.bind(this)
         this.generateMaps = this.generateMaps.bind(this)
         this.addInput = this.addInput.bind(this)
+        this.deleteInput = this.deleteInput.bind(this)
         this.populateState = this.populateState.bind(this)
         this.handleEditRecipe = this.handleEditRecipe.bind(this)
         this.handleChange = this.handleChange.bind(this)
@@ -38,8 +39,8 @@ class RecipeView extends Component {
             }
         }
 
-        if(inputsKey !== 'ingredients'){
-        inputs.push('')
+        if (inputsKey !== 'ingredients') {
+            inputs.push('')
         } else {
             inputs.push({
                 name: '',
@@ -61,7 +62,8 @@ class RecipeView extends Component {
                 inputsKey = key
             }
         }
-        inputs.splice(e.target.step, 1)
+
+        inputs.splice(e.target.dataset.index, 1)
         this.setState({
             [inputsKey]: inputs
         })
@@ -106,13 +108,17 @@ class RecipeView extends Component {
             if (key === 'equipment' || key === 'directions') {
                 arrayOfMaps.push(this.state[key].map((item, index) => {
                     if (!this.state.isEditing && key === 'directions') {
-                        return <li key={`directions-${index}`}>{item}</li>
+                        return <div key={`directions-${index}`}>
+                            <li >{item}</li>
+                        </div>
                     } else if (!this.state.isEditing) {
-                        return <p key={`${key}-${index}`}>{item}</p>
+                        return <div key={`${key}-${index}`}>
+                            <p>{item}</p>
+                        </div>
                     } else {
-                        return <div key={`${key}-${index}`}> 
-                        <input step={index} name={key} onChange={this.handleChange} placeholder={item} ></input>
-                        <button name={key} step={index} onClick={this.deleteInput}>Delete</button>
+                        return <div key={`${key}-${index}`}>
+                            <input step={index} name={key} onChange={this.handleChange} placeholder={item} ></input>
+                            <button name={key} data-index={index} onClick={this.deleteInput}>Delete</button>
                         </div>
                     }
                 }))
@@ -127,6 +133,7 @@ class RecipeView extends Component {
                         return <div key={`${key}-${index}`}>
                             <input placeholder={item.name}></input>
                             <input placeholder={item.amount}></input>
+                            <button name={key} data-index={index} onClick={this.deleteInput}>Delete</button>
                         </div>
                     }
                 }))
@@ -158,7 +165,7 @@ class RecipeView extends Component {
         return (
             <div>
                 <button onClick={this.props.switchView} name='savedView'>Saved Recipes</button>
-        <button onClick={this.toggleEdit}>{this.state.isEditing ? 'Cancel' : 'Edit'}</button>
+                <button onClick={this.toggleEdit}>{this.state.isEditing ? 'Cancel' : 'Edit'}</button>
                 {this.state.isEditing && <button name='recipeView' onClick={this.handleEditRecipe}>Save</button>}
                 {this.state.isEditing && <button name='home' onClick={this.handleDelete}>Delete</button>}
                 {this.state.isEditing ? <input name='name' placeholder={name} onChange={this.handleChange}></input> : <h2>{name}</h2>}
@@ -170,15 +177,15 @@ class RecipeView extends Component {
                 </div>
 
                 <div className='ingredients-display'>
-                <h2>Ingredients</h2>
+                    <h2>Ingredients</h2>
                     {this.generateMaps()[1]}
                     {isEditing && <button name='ingredients' onClick={this.addInput}>Add Ingredient</button>}
                 </div>
 
                 <div className='directions-display'>
-                <h2>Directions</h2>
-                <ol >{this.generateMaps()[2]}</ol>
-                {isEditing && <button name='directions' onClick={this.addInput}>Add Directions</button>}
+                    <h2>Directions</h2>
+                    <ol >{this.generateMaps()[2]}</ol>
+                    {isEditing && <button name='directions' onClick={this.addInput}>Add Directions</button>}
                 </div>
             </div>
         )

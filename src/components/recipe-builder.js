@@ -6,13 +6,13 @@ class RecipeBuilder extends Component {
         this.state = {
             name: '',
             equipment: ['',],
-            ingredients: ['',],
+            ingredients: [{ name: '', amount: '' }],
             directions: ['',],
         }
         this.addInput = this.addInput.bind(this)
         this.handleChange = this.handleChange.bind(this)
         this.handleCreateRecipe = this.handleCreateRecipe.bind(this)
-        this.changeName= this.changeName.bind(this)
+        this.changeName = this.changeName.bind(this)
     }
 
     addInput(e) {
@@ -26,15 +26,22 @@ class RecipeBuilder extends Component {
             }
         }
 
+        if (inputsKey !== 'ingredients'){
         inputs.push('')
+        } else {
+            inputs.push({
+                name: '',
+                amount: '',
+            })
+        }
 
         this.setState({
             [inputsKey]: inputs
         })
     }
 
-    changeName (e) {
-        this.setState ({
+    changeName(e) {
+        this.setState({
             name: e.target.value
         })
     }
@@ -43,6 +50,7 @@ class RecipeBuilder extends Component {
         let inputs
         let inputsKey
 
+
         for (let key in this.state) {
             if (key === e.target.name) {
                 inputs = this.state[key]
@@ -50,21 +58,33 @@ class RecipeBuilder extends Component {
             }
         }
 
-        inputs.splice(e.target.step, 1, e.target.value)
+        console.log(e.target.type)
+
+        if (typeof inputs[0] === 'string') {
+            inputs.splice(e.target.step, 1, e.target.value)
+        } else if (e.target.placeholder === 'name') {
+            console.log('firing')
+            inputs[e.target.step].name = e.target.value
+        } else if (e.target.placeholder === 'amount') {
+            inputs[e.target.step].amount = e.target.value
+        }
+
 
         this.setState({
             [inputsKey]: inputs
         })
     }
 
-    handleCreateRecipe (e) {
-        const {name, equipment, ingredients, directions} = this.state
-
-        const recipe = {name, equipment, ingredients, directions}
-        if (recipe.name) {
-        this.props.setCurrentRecipe(recipe)
-        this.props.createNewRecipe(recipe)
-        this.props.switchView(e)
+    handleCreateRecipe(e) {
+        const { name, equipment, ingredients, directions } = this.state
+        console.log(this.props.allRecipes)
+        const recipe = { name, equipment, ingredients, directions }
+        if (this.props.allRecipes.findIndex(item => item.name.toLowerCase() === recipe.name.toLowerCase()) !== -1) {
+            window.alert('A recipe with this name already exists')
+        } else if (recipe.name) {
+            this.props.setCurrentRecipe(recipe)
+            this.props.createNewRecipe(recipe)
+            this.props.switchView(e)
         } else {
             window.alert('Add a name before saving the recipe')
         }
@@ -73,7 +93,7 @@ class RecipeBuilder extends Component {
     render() {
         const { equipment, ingredients, directions } = this.state
 
-//map each array in state to a set of inputs
+        //map each array in state to a set of inputs
         const equipmentMap = equipment.map((item, index) => {
             return <input
                 onChange={this.handleChange}
@@ -84,13 +104,23 @@ class RecipeBuilder extends Component {
             ></input>
         })
         const ingredientsMap = ingredients.map((item, index) => {
-            return <input
-                onChange={this.handleChange}
-                step={index}
-                name={'ingredients'}
-                value={this.state.ingredients[index]}
-                key={`ingredient-${index}`}
-            ></input>
+            return <div key={`ingredients-${index}`} >
+                <input
+                    onChange={this.handleChange}
+                    name='ingredients'
+                    placeholder='name'
+                    // value={this.state.ingredients[index].name}
+                    step={index}
+                ></input>
+
+                <input
+                    onChange={this.handleChange}
+                    name='ingredients'
+                    placeholder='amount'
+                    // value={this.state.ingredients[index].amount}
+                    step={index}
+                ></input>
+            </div>
         })
         const directionsMap = directions.map((item, index) => {
             return <textarea
@@ -122,7 +152,7 @@ class RecipeBuilder extends Component {
                     <button onClick={this.addInput} name='directions'>Add direction</button>
 
                 </div>
-                <button name='recipeView'onClick={this.handleCreateRecipe} className='save-button'>Save Recipe</button>
+                <button name='recipeView' onClick={this.handleCreateRecipe} className='save-button'>Save Recipe</button>
             </div>
         )
     }

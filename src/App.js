@@ -77,6 +77,7 @@ class App extends Component {
       <div className="App">
         <header>
           <h1>Imprescipe!</h1>
+          <h3>A recipe builder to standardize and organize your recipes</h3>
         </header>
         {this.state.view === 'home' &&
           <div className=''>
@@ -96,6 +97,7 @@ class App extends Component {
             switchView={this.switchView}
             setCurrentRecipe={this.setCurrentRecipe}
             createNewRecipe={this.createNewRecipe}
+            allRecipes={this.state.allRecipes}
           />}
 
         {/* saved recipes component */}

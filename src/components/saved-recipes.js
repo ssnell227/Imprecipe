@@ -3,16 +3,12 @@ import React, { Component } from 'react'
 class SavedRecipes extends Component {
     constructor(props) {
         super(props)
-        this.state = {
-            clickedRecipe: {},
-        }
 
         this.handleClick = this.handleClick.bind(this)
     }
 
     handleClick (e) {
         const {allRecipes} = this.props
-        //this breaks the setCurrentRecipe because multiple recipes may have the same name
         this.props.setCurrentRecipe(allRecipes.find(item => item.name === e.target.innerHTML))
         this.props.switchView(e)
     }

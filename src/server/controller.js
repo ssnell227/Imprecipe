@@ -3,21 +3,21 @@ const recipes = [
         id: 0,
         name: 'sample',
         equipment: ['sheet-pan', 'stand-mixer'],
-        ingredients: ['all-purpose flour', 'baking soda', 'sugar'],
+        ingredients: [{name:'all-purpose flour', amount: '1 cup'}, {name:'whole wheat flour', amount: '2 cups'}],
         directions: ['Set oven to 400 degrees', 'Mix dry ingredients']
     },
     {
         id: 1,
         name: 'sample2',
         equipment: ['sheet-pan', 'stand-mixer'],
-        ingredients: ['all-purpose flour', 'baking soda', 'sugar'],
+        ingredients: [{name:'all-purpose flour', amount: '1 cup'}, {name:'whole wheat flour', amount: '2 cups'}],
         directions: ['Set oven to 400 degrees', 'Mix dry ingredients']
     },
     {
         id: 2,
         name: 'sample3',
         equipment: ['sheet-pan', 'stand-mixer'],
-        ingredients: ['all-purpose flour', 'baking soda', 'sugar'],
+        ingredients: [{name:'all-purpose flour', amount: '1 cup'}, {name:'whole wheat flour', amount: '2 cups'}],
         directions: ['Set oven to 400 degrees', 'Mix dry ingredients']
     }
 ]

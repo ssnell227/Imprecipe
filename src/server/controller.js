@@ -8,14 +8,14 @@ const recipes = [
     },
     {
         id: 1,
-        name: 'sample',
+        name: 'sample2',
         equipment: ['sheet-pan', 'stand-mixer'],
         ingredients: ['all-purpose flour', 'baking soda', 'sugar'],
         directions: ['Set oven to 400 degrees', 'Mix dry ingredients']
     },
     {
         id: 2,
-        name: 'sample',
+        name: 'sample3',
         equipment: ['sheet-pan', 'stand-mixer'],
         ingredients: ['all-purpose flour', 'baking soda', 'sugar'],
         directions: ['Set oven to 400 degrees', 'Mix dry ingredients']
@@ -47,8 +47,6 @@ module.exports = {
 
         const index = recipes.findIndex(item => item.id === +id)
 
-        console.log(index)
-
         const {name, equipment, ingredients, directions} = req.body
 
         const updatedRecipe = {
@@ -59,9 +57,9 @@ module.exports = {
             directions: directions || recipes[index].directions,
         }
 
-        recipes.splice(index, 1, recipes)
+        recipes.splice(index, 1, updatedRecipe)
 
-        res.status(200).send(recipes[index])
+        res.status(200).send(recipes)
     },
     deleteRecipe: (req, res) => {
         const {id} = req.params

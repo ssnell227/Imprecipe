@@ -12,9 +12,8 @@ class SavedRecipes extends Component {
 
     handleClick (e) {
         const {allRecipes} = this.props
-        console.log(e.target.innerHTML)
+        //this breaks the setCurrentRecipe because multiple recipes may have the same name
         this.props.setCurrentRecipe(allRecipes.find(item => item.name === e.target.innerHTML))
-        console.log(e.target.name)
         this.props.switchView(e)
     }
 

@@ -19,6 +19,8 @@ class App extends Component {
     this.setCurrentRecipe = this.setCurrentRecipe.bind(this)
     this.getAllRecipes = this.getAllRecipes.bind(this)
     this.createNewRecipe = this.createNewRecipe.bind(this)
+    this.editRecipe = this.editRecipe.bind(this)
+    this.deleteRecipe = this.deleteRecipe.bind(this)
   }
 
   switchView(e) {
@@ -48,10 +50,21 @@ class App extends Component {
 
   createNewRecipe(recipeObj) {
     Axios.post('/api/recipes/', recipeObj)
-      .then(res => this.setState({ allRecipes: res.data }))
-      .catch(err => console.log(err))
+    .then(res => this.setState({ allRecipes: res.data }))
+    .catch(err => console.log(err))
   }
 
+  editRecipe(recipeObj) {
+    Axios.put(`/api/recipes/${recipeObj.id}`, recipeObj)
+    .then(res => this.setState({allRecipes: res.data}))
+    .catch(err => console.log(err))
+  }
+
+  deleteRecipe(id) {
+    Axios.delete(`/api/recipes/${id}`)
+    .then(res => this.setState({allRecipes: res.data}))
+    .catch(err => console.log(err))
+  }
 
   componentDidMount() {
     this.getAllRecipes()
@@ -90,6 +103,7 @@ class App extends Component {
             switchView={this.switchView}
             allRecipes={this.state.allRecipes}
             setCurrentRecipe={this.setCurrentRecipe}
+            
           />}
 
         {/* individual recipe component */}
@@ -97,6 +111,9 @@ class App extends Component {
           <RecipeView
             switchView={this.switchView}
             currentRecipe={this.state.currentRecipe}
+            setCurrentRecipe={this.setCurrentRecipe}
+            deleteRecipe={this.deleteRecipe}
+            editRecipe={this.editRecipe}
           />}
       </div>
     );

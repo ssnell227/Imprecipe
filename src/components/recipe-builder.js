@@ -10,6 +10,7 @@ class RecipeBuilder extends Component {
             directions: ['',],
         }
         this.addInput = this.addInput.bind(this)
+        this.deleteInput = this.deleteInput.bind(this)
         this.handleChange = this.handleChange.bind(this)
         this.handleCreateRecipe = this.handleCreateRecipe.bind(this)
         this.changeName = this.changeName.bind(this)
@@ -26,8 +27,8 @@ class RecipeBuilder extends Component {
             }
         }
 
-        if (inputsKey !== 'ingredients'){
-        inputs.push('')
+        if (inputsKey !== 'ingredients') {
+            inputs.push('')
         } else {
             inputs.push({
                 name: '',
@@ -35,6 +36,22 @@ class RecipeBuilder extends Component {
             })
         }
 
+        this.setState({
+            [inputsKey]: inputs
+        })
+    }
+
+    deleteInput(e) {
+        let inputs, inputsKey
+
+        for (let key in this.state) {
+            if (key === e.target.name) {
+                inputs = this.state[key]
+                inputsKey = key
+            }
+        }
+        console.log(e.target.dataset)
+        inputs.splice(e.target.dataset.index, 1)
         this.setState({
             [inputsKey]: inputs
         })
@@ -57,8 +74,6 @@ class RecipeBuilder extends Component {
                 inputsKey = key
             }
         }
-
-        console.log(e.target.type)
 
         if (typeof inputs[0] === 'string') {
             inputs.splice(e.target.step, 1, e.target.value)
@@ -95,21 +110,23 @@ class RecipeBuilder extends Component {
 
         //map each array in state to a set of inputs
         const equipmentMap = equipment.map((item, index) => {
-            return <input
-                onChange={this.handleChange}
-                name={'equipment'}
-                step={index}
-                value={this.state.equipment[index]}
-                key={`equipment-${index}`}
-            ></input>
+            return <div key={`equipment-${index}`} className='equipment-item'>
+                <input
+                    onChange={this.handleChange}
+                    name={'equipment'}
+                    step={index}
+                    value={this.state.equipment[index]}
+                ></input>
+                <button data-index={index} name='equipment' onClick={this.deleteInput}>Delete</button>
+            </div>
         })
         const ingredientsMap = ingredients.map((item, index) => {
-            return <div key={`ingredients-${index}`} >
+            return <div key={`ingredients-${index}`} className='ingredients-item'>
                 <input
                     onChange={this.handleChange}
                     name='ingredients'
                     placeholder='name'
-                    // value={this.state.ingredients[index].name}
+                    value={this.state.ingredients[index].name}
                     step={index}
                 ></input>
 
@@ -117,21 +134,27 @@ class RecipeBuilder extends Component {
                     onChange={this.handleChange}
                     name='ingredients'
                     placeholder='amount'
-                    // value={this.state.ingredients[index].amount}
+                    value={this.state.ingredients[index].amount}
                     step={index}
                 ></input>
+                <button name='ingredients' onClick={this.deleteInput} data-index={index}>Delete</button>
+
             </div>
         })
         const directionsMap = directions.map((item, index) => {
-            return <textarea
-                rows='3'
-                cols='50'
-                onChange={this.handleChange}
-                step={index}
-                name={'directions'}
-                value={this.state.directions[index]}
-                key={`directions-${index}`}
-            ></textarea>
+            return <div key={`directions-${index}`} className='directions-item'>
+                <textarea
+                    rows='3'
+                    cols='50'
+                    onChange={this.handleChange}
+                    step={index}
+                    name={'directions'}
+                    value={this.state.directions[index]}
+                    key={`directions-${index}`}
+                ></textarea>
+                <button name='directions' onClick={this.deleteInput} data-index={index}>Delete</button>
+
+            </div>
         })
         return (
             <div className='recipeBuilder'>

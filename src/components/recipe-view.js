@@ -38,8 +38,30 @@ class RecipeView extends Component {
             }
         }
 
+        if(inputsKey !== 'ingredients'){
         inputs.push('')
+        } else {
+            inputs.push({
+                name: '',
+                amount: '',
+            })
+        }
 
+        this.setState({
+            [inputsKey]: inputs
+        })
+    }
+
+    deleteInput(e) {
+        let inputs, inputsKey
+
+        for (let key in this.state) {
+            if (key === e.target.name) {
+                inputs = this.state[key]
+                inputsKey = key
+            }
+        }
+        inputs.splice(e.target.step, 1)
         this.setState({
             [inputsKey]: inputs
         })
@@ -53,6 +75,7 @@ class RecipeView extends Component {
         this.props.setCurrentRecipe(recipe)
         this.props.editRecipe(recipe)
         this.props.switchView(e)
+        this.toggleEdit()
     }
 
     handleChange(e) {
@@ -87,7 +110,10 @@ class RecipeView extends Component {
                     } else if (!this.state.isEditing) {
                         return <p key={`${key}-${index}`}>{item}</p>
                     } else {
-                        return <input step={index} name={key} onChange={this.handleChange} placeholder={item} key={`${key}-${index}`}></input>
+                        return <div key={`${key}-${index}`}> 
+                        <input step={index} name={key} onChange={this.handleChange} placeholder={item} ></input>
+                        <button name={key} step={index} onClick={this.deleteInput}>Delete</button>
+                        </div>
                     }
                 }))
             } else if (key === 'ingredients') {
@@ -133,7 +159,7 @@ class RecipeView extends Component {
             <div>
                 <button onClick={this.props.switchView} name='savedView'>Saved Recipes</button>
         <button onClick={this.toggleEdit}>{this.state.isEditing ? 'Cancel' : 'Edit'}</button>
-                {this.state.isEditing && <button name='savedView' onClick={this.handleEditRecipe}>Save</button>}
+                {this.state.isEditing && <button name='recipeView' onClick={this.handleEditRecipe}>Save</button>}
                 {this.state.isEditing && <button name='home' onClick={this.handleDelete}>Delete</button>}
                 {this.state.isEditing ? <input name='name' placeholder={name} onChange={this.handleChange}></input> : <h2>{name}</h2>}
 

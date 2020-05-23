@@ -57,6 +57,7 @@ class App extends Component {
   editRecipe(recipeObj) {
     Axios.put(`/api/recipes/${recipeObj.id}`, recipeObj)
     .then(res => this.setState({allRecipes: res.data}))
+    .then(res => console.log(res.body))
     .catch(err => console.log(err))
   }
 

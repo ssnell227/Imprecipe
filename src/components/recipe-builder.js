@@ -49,7 +49,6 @@ class RecipeBuilder extends Component {
                 inputsKey = key
             }
         }
-        console.log(e.target, e.target.step, e.target.name)
 
         inputs.splice(e.target.step, 1, e.target.value)
 
@@ -58,12 +57,17 @@ class RecipeBuilder extends Component {
         })
     }
 
-    handleCreateRecipe () {
+    handleCreateRecipe (e) {
         const {name, equipment, ingredients, directions} = this.state
 
         const recipe = {name, equipment, ingredients, directions}
+        if (recipe.name) {
         this.props.setCurrentRecipe(recipe)
         this.props.createNewRecipe(recipe)
+        this.props.switchView(e)
+        } else {
+            window.alert('Add a name before saving the recipe')
+        }
     }
 
     render() {
@@ -89,13 +93,15 @@ class RecipeBuilder extends Component {
             ></input>
         })
         const directionsMap = directions.map((item, index) => {
-            return <input
+            return <textarea
+                rows='3'
+                cols='50'
                 onChange={this.handleChange}
                 step={index}
                 name={'directions'}
                 value={this.state.directions[index]}
                 key={`directions-${index}`}
-            ></input>
+            ></textarea>
         })
         return (
             <div className='recipeBuilder'>
@@ -116,7 +122,7 @@ class RecipeBuilder extends Component {
                     <button onClick={this.addInput} name='directions'>Add direction</button>
 
                 </div>
-                <button onClick={this.handleCreateRecipe} className='save-button'>Save Recipe</button>
+                <button name='recipeView'onClick={this.handleCreateRecipe} className='save-button'>Save Recipe</button>
             </div>
         )
     }

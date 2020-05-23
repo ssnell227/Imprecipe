@@ -15,7 +15,7 @@ class RecipeView extends Component {
         this.generateMaps = this.generateMaps.bind(this)
         this.addInput = this.addInput.bind(this)
         this.populateState = this.populateState.bind(this)
-        this.handleEditRecipe= this.handleEditRecipe.bind(this)
+        this.handleEditRecipe = this.handleEditRecipe.bind(this)
         this.handleChange = this.handleChange.bind(this)
         this.handleDelete = this.handleDelete.bind(this)
     }
@@ -45,13 +45,14 @@ class RecipeView extends Component {
         })
     }
 
-    handleEditRecipe () {
-        const {id, name, equipment, ingredients, directions} = this.state
+    handleEditRecipe(e) {
+        const { id, name, equipment, ingredients, directions } = this.state
 
         const recipe = { id, name, equipment, ingredients, directions }
         console.log(recipe)
         this.props.setCurrentRecipe(recipe)
         this.props.editRecipe(recipe)
+        this.props.switchView(e)
     }
 
     handleChange(e) {
@@ -64,12 +65,16 @@ class RecipeView extends Component {
                 inputsKey = key
             }
         }
-
-        inputs.splice(e.target.step, 1, e.target.value)
-
-        this.setState({
-            [inputsKey]: inputs
-        })
+        if (typeof inputs === 'object') {
+            inputs.splice(e.target.step, 1, e.target.value)
+            this.setState({
+                [inputsKey]: inputs
+            })
+        } else {
+            this.setState({
+                [e.target.name]: e.target.value
+            })
+        }
     }
 
     generateMaps() {
@@ -92,13 +97,12 @@ class RecipeView extends Component {
 
     populateState() {
         const { currentRecipe } = this.props
-        console.log(currentRecipe)
         for (let key in currentRecipe) {
-                this.setState({ [key]: currentRecipe[key] })
+            this.setState({ [key]: currentRecipe[key] })
         }
     }
 
-    handleDelete (e) {
+    handleDelete(e) {
         this.props.deleteRecipe(this.state.id)
         this.props.switchView(e)
     }
@@ -113,11 +117,11 @@ class RecipeView extends Component {
 
         return (
             <div>
-                <button onClick={this.props.switchView} name='savedView'>Back</button>
+                <button onClick={this.props.switchView} name='savedView'>Saved Recipes</button>
                 <button onClick={this.toggleEdit}>Edit</button>
-                {this.state.isEditing && <button onClick={this.handleEditRecipe}>Save</button>}
+                {this.state.isEditing && <button name='savedView' onClick={this.handleEditRecipe}>Save</button>}
                 {this.state.isEditing && <button name='home' onClick={this.handleDelete}>Delete</button>}
-                <h2>{name}</h2>
+                {this.state.isEditing ? <input name='name' placeholder={name} onChange={this.handleChange}></input> : <h2>{name}</h2>}
 
                 <div className='equipment-display'>{this.generateMaps()[0]}</div>
                 {isEditing && <button name='equipment' onClick={this.addInput}>Add equipment</button>}

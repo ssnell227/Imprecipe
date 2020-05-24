@@ -8,12 +8,27 @@ class RecipeBuilder extends Component {
             equipment: ['',],
             ingredients: [{ name: '', amount: '' }],
             directions: ['',],
+            stage: 1
         }
         this.addInput = this.addInput.bind(this)
         this.deleteInput = this.deleteInput.bind(this)
         this.handleChange = this.handleChange.bind(this)
         this.handleCreateRecipe = this.handleCreateRecipe.bind(this)
         this.changeName = this.changeName.bind(this)
+        this.nextStage = this.nextStage.bind(this)
+        this.prevStage = this.prevStage.bind(this)
+    }
+
+    nextStage() {
+        let { stage } = this.state
+        console.log(stage)
+        stage < 4 && stage ++
+        this.setState({ stage })
+    }
+    prevStage() {
+        let { stage } = this.state
+        stage > 1 && stage --
+        this.setState({ stage })
     }
 
     addInput(e) {
@@ -50,7 +65,6 @@ class RecipeBuilder extends Component {
                 inputsKey = key
             }
         }
-        console.log(e.target.dataset)
         inputs.splice(e.target.dataset.index, 1)
         this.setState({
             [inputsKey]: inputs
@@ -80,7 +94,6 @@ class RecipeBuilder extends Component {
         } else if (inputsKey === 'directions') {
             inputs.splice(e.target.dataset.index, 1, e.target.value)
         } else if (e.target.placeholder === 'name') {
-            console.log('firing')
             inputs[e.target.step].name = e.target.value
         } else if (e.target.placeholder === 'amount') {
             inputs[e.target.step].amount = e.target.value
@@ -119,7 +132,7 @@ class RecipeBuilder extends Component {
                     step={index}
                     value={this.state.equipment[index]}
                 ></input>
-                <button data-index={index} name='equipment' onClick={this.deleteInput}>Delete</button>
+                <button className='delete-button' data-index={index} name='equipment' onClick={this.deleteInput}>X</button>
             </div>
         })
         const ingredientsMap = ingredients.map((item, index) => {
@@ -139,7 +152,7 @@ class RecipeBuilder extends Component {
                     value={this.state.ingredients[index].amount}
                     step={index}
                 ></input>
-                <button name='ingredients' onClick={this.deleteInput} data-index={index}>Delete</button>
+                <button className='delete-button' name='ingredients' onClick={this.deleteInput} data-index={index}>X</button>
 
             </div>
         })
@@ -154,30 +167,49 @@ class RecipeBuilder extends Component {
                     value={this.state.directions[index]}
                     key={`directions-${index}`}
                 ></textarea>
-                <button name='directions' onClick={this.deleteInput} data-index={index}>Delete</button>
+                <button className='delete-button' name='directions' onClick={this.deleteInput} data-index={index}>X</button>
 
             </div>
         })
         return (
             <div className='recipeBuilder'>
                 <nav>
-                    <button name='home' onClick={this.props.switchView}>Back</button>
+                    <button name='home' onClick={this.props.switchView}>Home</button>
                 </nav>
-                <span>Name:</span><input onChange={this.changeName}></input>
-                <div className='equipment'>
+
+                {this.state.stage === 1 && <div>
+                    <h3 className='prompt'>What's your recipe's name?</h3>
+                    <input class='name-input' onChange={this.changeName}></input>
+                    <br/>
+                    <button onClick={this.nextStage}>Next</button>
+                </div>}
+
+                {this.state.stage === 2 && <div className='equipment'>
+                <h3 className='prompt'>Any special equipment?</h3>
                     {equipmentMap}
+                    <button onClick={this.prevStage}>Back</button>
                     <button onClick={this.addInput} name='equipment'>Add equipment</button>
-                </div>
-                <div className='ingredients'>
+                    <button onClick={this.nextStage}>Next</button>
+                </div>}
+
+                {this.state.stage === 3 && <div className='ingredients'>
+                <h3 className='prompt'>Time to add some ingredients.  Don't forget units!</h3>
                     {ingredientsMap}
+                    <button onClick={this.prevStage}>Back</button>
                     <button onClick={this.addInput} name='ingredients'>Add ingredient</button>
-                </div>
-                <div className='directions'>
+                    <button onClick={this.nextStage}>Next</button>
+                </div>}
+
+                {this.state.stage === 4 && <div className='directions'>
+                <h3 className='prompt'>Alright, now how do you make it?</h3>
                     {directionsMap}
                     <button onClick={this.addInput} name='directions'>Add direction</button>
-
-                </div>
+                    <br/>
+                    <button onClick={this.prevStage}>Back</button>
+                    <br/>
                 <button name='recipeView' onClick={this.handleCreateRecipe} className='save-button'>Save Recipe</button>
+                </div>}
+
             </div>
         )
     }

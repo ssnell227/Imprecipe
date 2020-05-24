@@ -18,7 +18,7 @@ const recipes = [
         name: 'sample3',
         equipment: ['sheet-pan', 'stand-mixer'],
         ingredients: [{name:'all-purpose flour', amount: '1 cup'}, {name:'whole wheat flour', amount: '2 cups'}],
-        directions: ['Set oven to 400 degrees', 'Mix dry ingredients']
+        directions: ['Set oven to 400 degrees', 'Mix dry ingredients', 'this is a much longer direction.  Its so long it might take multiple lines to fit. In fact, there should be some rule against how long this is.  Its obnoxiously long, so long that all the other directions look like weenies in comparison']
     }
 ]
 

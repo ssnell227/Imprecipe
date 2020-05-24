@@ -75,19 +75,21 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <header>
+        <main>
           <h1>Imprescipe!</h1>
-          {this.state.view ==='home' && <h3>A recipe builder to standardize and organize your recipes</h3>}
-        </header>
+          {this.state.view ==='home' && <h3 className='secondary-title'>A recipe builder to standardize and organize your recipes</h3>}
+        </main>
         {this.state.view === 'home' &&
           <div className=''>
             <button
               onClick={this.switchView}
               name='recipeBuilder'
+              className='nav-button'
             >Start new recipe</button>
             <button
               onClick={this.switchView}
               name='savedView'
+              className='nav-button'
             >Saved recipes</button>
           </div>}
 

@@ -15,11 +15,12 @@ class SavedRecipes extends Component {
 
     render() {
         const allRecipesMap = this.props.allRecipes.map((item, index) => {
-            return <button name='recipeView' key={`allRecipes-${index}`} onClick={this.handleClick}>{item.name}</button>
+            return <button className='nav-button' name='recipeView' key={`allRecipes-${index}`} onClick={this.handleClick}>{item.name}</button>
         })
         return (
             <div className='savedRecipes'>
-                <button onClick={this.props.switchView} name='home'>Back</button>
+                <button className='nav-button' onClick={this.props.switchView} name='home'>Back</button>
+                <h3 className='secondary-title'>Saved Recipes</h3>
                 <br></br>
                 {allRecipesMap}
             </div>

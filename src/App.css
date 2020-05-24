@@ -2,38 +2,71 @@
 
 
 .App {
+  margin: 50px auto;
+  padding: 50px;
+  max-width: 950px;
+  min-width: 375px;
+  
   text-align: center;
-  border: 100px solid teal;
+  
+  background: rgb(37, 173, 173);
+
+  border: 3px solid darksalmon;
   border-radius: 40px;
-  margin: 50px 100px;
+}
+
+main h1 {
+  width: fit-content;
+  margin: 50px auto;
+  padding-bottom: 15px;
+
+  border-bottom: 5px dotted darksalmon;
+  
+  color:  rgb(0, 31, 31);
 }
 
 .App h1 {
   font-size: 100px;
 }
 
-.App h3 {
+.secondary-title {
   font-family: 'Indie Flower';
   font-size: 40px;
+}
+
+input,
+textarea {
+  background: rgb(255, 222, 218);
+  border: none;
+  border-radius: 5px 0px 5px 0px;
+  margin-right: 2px;
+  color: black;
+}
+
+::placeholder {
+  color: black;
+  font-size: 16px;
+  font-family: sans-serif;
 }
 
 /* button styles */
 button {
   padding: 5px;
-  margin: 10px;
+  margin: 3px 10px;
 
-  background-color: darksalmon;
+  background-color: rgb(0, 46, 46);
   border: none;
-  border-radius: 3px;
+  border-radius: 7px;
   box-shadow: 0px 3px 3px black;
 
+  color: rgb(37, 173, 173);
   font-weight: bold;
 
   cursor: pointer;
 }
 
 button:hover {
-  background-color: rgb(185, 119, 97);
+  color: rgb(185, 119, 97);
 }
 
 button:active {
@@ -41,3 +74,112 @@ button:active {
   box-shadow: none;
 }
 
+.nav-button {
+  padding: 10px 15px;
+  margin-bottom: 10px;
+}
+
+.delete-button{
+  height: 15px;
+  width: 16px;
+  border-radius: 50%;
+  font-size: 10px;
+  padding: 0px;
+}
+
+/* recipe view  */
+.recipe-view {
+  margin: auto;
+}
+
+li {
+  margin-top: 10px;
+}
+
+.name-input {
+  margin: 20px;
+  text-align: center;
+  font-family: 'Indie Flower';
+  font-size: 30px;
+}
+
+.name-input::placeholder {
+  font-family: 'Indie Flower';
+  font-size: 30px;
+}
+
+.content {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.left-content {
+  width: 550px;
+  border-right: 5px dotted darksalmon;
+  padding-right: 50px;
+}
+
+.equipment-display,
+.ingredients-display,
+.directions-display {
+  text-align: left;
+}
+
+.directions-display {
+  margin-left: 50px;
+  min-width: 450px;
+}
+
+.name {
+  font-family: 'Indie Flower';
+  font-size: 30px;
+}
+
+.ingredient-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+}
+
+/* recipe builder */
+
+@media (max-width: 850px) {
+  .content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .content h2 {
+    text-align: center;
+  }
+  
+  .left-content {
+    border-right: none;
+    border-bottom: 5px dotted darksalmon;
+    width: 300px;
+    margin:auto;
+  }
+
+  .directions-display {
+    margin: auto;
+    min-width: 0px;
+  }
+}
+
+@media (max-width: 675px) {
+  .App h1 {
+    font-size: 50px;
+  }
+  .secondary-title {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 500px) {
+  .App {
+    padding: 0px;
+  }
+}

@@ -90,15 +90,20 @@ class RecipeView extends Component {
                 inputsKey = key
             }
         }
+        
         if (inputsKey === 'equipment') {
             inputs.splice(e.target.step, 1, e.target.value)
         } else if (inputsKey === 'name') {
             inputs = e.target.value
+        } else if ( inputsKey === 'directions') {
+            inputs.splice(e.target.dataset.index, 1, e.target.value)
         } else if (e.target.dataset.name === 'name') {
             inputs[e.target.step].name = e.target.value
         } else if (e.target.dataset.name === 'amount') {
             inputs[e.target.step].amount = e.target.value
         }
+
+        console.log(inputs)
         this.setState({
             [inputsKey]: inputs
         })
@@ -140,9 +145,8 @@ class RecipeView extends Component {
                             <li>{item}</li>
                         </div>
                     } else {
-                        console.log(item.length)
                         return <div key={`${key}-${index}`}>
-                            <textarea  cols={50} rows={item.length > 140 ? Math.ceil(item.length/50) : 2} step={index} name={key} onChange={this.handleChange} placeholder={item} ></textarea>
+                            <textarea  cols={50} rows={item.length > 140 ? Math.ceil(item.length/50) : 2} data-index={index} name='directions' onChange={this.handleChange} placeholder={item} ></textarea>
                             <button className='delete-button' name={key} data-index={index} onClick={this.deleteInput}>X</button>
                         </div>
                     }
@@ -178,12 +182,11 @@ class RecipeView extends Component {
 
             return (
                 <div className='recipe-view'>
-                    <button className='nav-button' onClick={this.props.switchView} name='savedView'>Back to Saved Recipes</button>
+                    {this.state.isEditing ? <input size={name.length} className='name-input' name='name' placeholder={name} onChange={this.handleChange}></input> : <h2 className='name'>{name}</h2>}
+                    <br />
                     <button className='nav-button' onClick={this.toggleEdit}>{this.state.isEditing ? 'Cancel' : 'Edit'}</button>
                     {this.state.isEditing && <button className='nav-button' name='recipeView' onClick={this.handleEditRecipe}>Save</button>}
                     {this.state.isEditing && <button className='nav-button' name='home' onClick={this.handleDelete}>Delete</button>}
-                    <br />
-                    {this.state.isEditing ? <input size={name.length} className='name-input' name='name' placeholder={name} onChange={this.handleChange}></input> : <h2 className='name'>{name}</h2>}
                     <div className='content'>
                         <div className='left-content'>
                             <div className='equipment-display'>

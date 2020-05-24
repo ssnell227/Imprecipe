@@ -173,9 +173,6 @@ class RecipeBuilder extends Component {
         })
         return (
             <div className='recipeBuilder'>
-                <nav>
-                    <button name='home' onClick={this.props.switchView}>Home</button>
-                </nav>
 
                 {this.state.stage === 1 && <div>
                     <h3 className='prompt'>What's your recipe's name?</h3>

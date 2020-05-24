@@ -4,6 +4,7 @@ import Axios from 'axios'
 import RecipeBuilder from './components/recipe-builder'
 import RecipeView from './components/recipe-view'
 import SavedView from './components/saved-recipes'
+import Header from './components/header'
 
 import './App.css';
 
@@ -14,6 +15,7 @@ class App extends Component {
       allRecipes: [],
       currentRecipe: {},
       view: 'home',
+      menu: false,
     }
     this.switchView = this.switchView.bind(this)
     this.setCurrentRecipe = this.setCurrentRecipe.bind(this)
@@ -21,6 +23,13 @@ class App extends Component {
     this.createNewRecipe = this.createNewRecipe.bind(this)
     this.editRecipe = this.editRecipe.bind(this)
     this.deleteRecipe = this.deleteRecipe.bind(this)
+    this.toggleMenu = this.toggleMenu.bind(this)
+  }
+
+  toggleMenu () {
+    this.setState({
+      menu: !this.state.menu
+    })
   }
 
   switchView(e) {
@@ -50,21 +59,20 @@ class App extends Component {
 
   createNewRecipe(recipeObj) {
     Axios.post('/api/recipes/', recipeObj)
-    .then(res => this.setState({ allRecipes: res.data }))
-    .catch(err => console.log(err))
+      .then(res => this.setState({ allRecipes: res.data }))
+      .catch(err => console.log(err))
   }
 
   editRecipe(recipeObj) {
     Axios.put(`/api/recipes/${recipeObj.id}`, recipeObj)
-    .then(res => this.setState({allRecipes: res.data}))
-    .then(res => console.log(res.body))
-    .catch(err => console.log(err))
+      .then(res => this.setState({ allRecipes: res.data }))
+      .catch(err => console.log(err))
   }
 
   deleteRecipe(id) {
     Axios.delete(`/api/recipes/${id}`)
-    .then(res => this.setState({allRecipes: res.data}))
-    .catch(err => console.log(err))
+      .then(res => this.setState({ allRecipes: res.data }))
+      .catch(err => console.log(err))
   }
 
   componentDidMount() {
@@ -74,52 +82,59 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <main>
-          <h1>Imprescipe!</h1>
-          {this.state.view ==='home' && <h3 className='secondary-title'>A recipe builder to standardize and organize your recipes</h3>}
-        </main>
-        {this.state.view === 'home' &&
-          <div className=''>
-            <button
-              onClick={this.switchView}
-              name='recipeBuilder'
-              className='nav-button'
-            >Start new recipe</button>
-            <button
-              onClick={this.switchView}
-              name='savedView'
-              className='nav-button'
-            >Saved recipes</button>
-          </div>}
+      <div className='everything'>
+        <Header 
+        toggleMenu={this.toggleMenu} 
+        menuClass={this.state.menu ? 'header-nav shown' : 'header-nav'} 
+        switchView={this.switchView} 
+        />
+        <div className="App">
+          <main>
+            <h1>Imprescipe!</h1>
+            {this.state.view === 'home' && <h3 className='secondary-title'>A recipe builder to standardize and organize your recipes</h3>}
+          </main>
+          {this.state.view === 'home' &&
+            <div className=''>
+              <button
+                onClick={this.switchView}
+                name='recipeBuilder'
+                className='nav-button'
+              >Start new recipe</button>
+              <button
+                onClick={this.switchView}
+                name='savedView'
+                className='nav-button'
+              >Saved recipes</button>
+            </div>}
 
-        {/* recipe builder component */}
-        {this.state.view === 'recipeBuilder' &&
-          <RecipeBuilder
-            switchView={this.switchView}
-            setCurrentRecipe={this.setCurrentRecipe}
-            createNewRecipe={this.createNewRecipe}
-            allRecipes={this.state.allRecipes}
-          />}
+          {/* recipe builder component */}
+          {this.state.view === 'recipeBuilder' &&
+            <RecipeBuilder
+              switchView={this.switchView}
+              setCurrentRecipe={this.setCurrentRecipe}
+              createNewRecipe={this.createNewRecipe}
+              allRecipes={this.state.allRecipes}
+            />}
 
-        {/* saved recipes component */}
-        {this.state.view === 'savedView' &&
-          <SavedView
-            switchView={this.switchView}
-            allRecipes={this.state.allRecipes}
-            setCurrentRecipe={this.setCurrentRecipe}
-            
-          />}
+          {/* saved recipes component */}
+          {this.state.view === 'savedView' &&
+            <SavedView
+              switchView={this.switchView}
+              allRecipes={this.state.allRecipes}
+              setCurrentRecipe={this.setCurrentRecipe}
 
-        {/* individual recipe component */}
-        {this.state.view === 'recipeView' &&
-          <RecipeView
-            switchView={this.switchView}
-            currentRecipe={this.state.currentRecipe}
-            setCurrentRecipe={this.setCurrentRecipe}
-            deleteRecipe={this.deleteRecipe}
-            editRecipe={this.editRecipe}
-          />}
+            />}
+
+          {/* individual recipe component */}
+          {this.state.view === 'recipeView' &&
+            <RecipeView
+              switchView={this.switchView}
+              currentRecipe={this.state.currentRecipe}
+              setCurrentRecipe={this.setCurrentRecipe}
+              deleteRecipe={this.deleteRecipe}
+              editRecipe={this.editRecipe}
+            />}
+        </div>
       </div>
     );
   }

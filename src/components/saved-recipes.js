@@ -19,7 +19,6 @@ class SavedRecipes extends Component {
         })
         return (
             <div className='savedRecipes'>
-                <button className='nav-button' onClick={this.props.switchView} name='home'>Back</button>
                 <h3 className='secondary-title'>Saved Recipes</h3>
                 <br></br>
                 {allRecipesMap}

@@ -91,15 +91,15 @@ class RecipeView extends Component {
         }
 
         if (inputsKey === 'equipment') {
-            inputs.splice(e.target.step, 1, e.target.value)
+            inputs.splice(e.target.dataset.index, 1, e.target.value)
         } else if (inputsKey === 'name') {
             inputs = e.target.value
         } else if (inputsKey === 'directions') {
             inputs.splice(e.target.dataset.index, 1, e.target.value)
         } else if (e.target.dataset.name === 'name') {
-            inputs[e.target.step].name = e.target.value
+            inputs[e.target.dataset.index].name = e.target.value
         } else if (e.target.dataset.name === 'amount') {
-            inputs[e.target.step].amount = e.target.value
+            inputs[e.target.dataset.index].amount = e.target.value
         }
 
 
@@ -151,7 +151,7 @@ class RecipeView extends Component {
                         return <div key={`${key}-${index}`}>
                             <input
                                 size={item.length}
-                                step={index}
+                                data-index={index}
                                 name={key}
                                 onChange={this.handleChange}
                                 placeholder={item}
@@ -202,7 +202,7 @@ class RecipeView extends Component {
                             <input
                                 list={`autofill-${index}`}
                                 size={item.name.length || 10}
-                                step={index}
+                                data-index={index}
                                 name='ingredients'
                                 data-name='name'
                                 onChange={this.handleAutofillInputs}
@@ -216,7 +216,7 @@ class RecipeView extends Component {
                             </datalist>
                             <input 
                             size={5} 
-                            step={index} 
+                            data-index={index} 
                             name='ingredients' 
                             data-name='amount' 
                             onChange={this.handleChange} 

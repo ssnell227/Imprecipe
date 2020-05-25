@@ -94,13 +94,13 @@ class RecipeBuilder extends Component {
         }
 
         if (inputsKey === 'equipment') {
-            inputs.splice(e.target.step, 1, e.target.value)
+            inputs.splice(e.target.dataset.index, 1, e.target.value)
         } else if (inputsKey === 'directions') {
             inputs.splice(e.target.dataset.index, 1, e.target.value)
         } else if (e.target.placeholder === 'name') {
-            inputs[e.target.step].name = e.target.value
+            inputs[e.target.dataset.index].name = e.target.value
         } else if (e.target.placeholder === 'amount') {
-            inputs[e.target.step].amount = e.target.value
+            inputs[e.target.dataset.index].amount = e.target.value
         }
 
 
@@ -136,9 +136,10 @@ class RecipeBuilder extends Component {
         const equipmentMap = equipment.map((item, index) => {
             return <div key={`equipment-${index}`} className='equipment-item'>
                 <input
+                    autoFocus
                     onChange={this.handleChange}
                     name={'equipment'}
-                    step={index}
+                    data-index={index}
                     value={this.state.equipment[index]}
                 ></input>
                 <button
@@ -152,11 +153,12 @@ class RecipeBuilder extends Component {
         const ingredientsMap = ingredients.map((item, index) => {
             return <div key={`ingredients-${index}`} className='ingredients-item'>
                 <input
+                    autoFocus
                     onChange={this.handleAutofillInputs}
                     name='ingredients'
                     placeholder='name'
                     value={this.state.ingredients[index].name}
-                    step={index}
+                    data-index={index}
                     list={`autofill-${index}`}
                 ></input>
                 <datalist id={`autofill-${index}`}>
@@ -171,7 +173,7 @@ class RecipeBuilder extends Component {
                     name='ingredients'
                     placeholder='amount'
                     value={this.state.ingredients[index].amount}
-                    step={index}
+                    data-index={index}
                 ></input>
                 <button
                     className='delete-button'
@@ -185,6 +187,7 @@ class RecipeBuilder extends Component {
         const directionsMap = directions.map((item, index) => {
             return <div key={`directions-${index}`} className='directions-item'>
                 <textarea
+                    autoFocus
                     rows='3'
                     cols='50'
                     onChange={this.handleChange}
@@ -207,7 +210,7 @@ class RecipeBuilder extends Component {
 
                 {this.state.stage === 1 && <div>
                     <h3 className='prompt'>What's your recipe's name?</h3>
-                    <input className='name-input' onChange={this.changeName}></input>
+                    <input autoFocus className='name-input' onChange={this.changeName}></input>
                     <br />
                     <button onClick={this.nextStage}>Next</button>
                 </div>}

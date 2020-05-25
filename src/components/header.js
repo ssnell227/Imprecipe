@@ -18,6 +18,7 @@ function Header(props) {
                 src='images\gas-burner.png' 
                 alt='logo'
                 ></img>
+                {props.view !== 'home' && <h2 className='header-title'>Imprecipe!</h2>}
                 <img 
                 onClick={props.toggleMenu} 
                 className='hamburger' 

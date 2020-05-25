@@ -102,18 +102,20 @@ class App extends Component {
     return (
       <div className='everything'>
         <Header
+          view={this.state.view}
           toggleMenu={this.toggleMenu}
           menuClass={this.state.menu ? 'header-nav shown' : 'header-nav'}
           switchView={this.switchView}
         />
         <main className="App">
+            {this.state.view === 'home' && 
           <div>
             <h1>Imprescipe!</h1>
-            {this.state.view === 'home' && 
             <h3 
             className='secondary-title'
-            >A recipe builder to standardize and organize your recipes</h3>}
+            >A recipe builder to standardize and organize your recipes</h3>
           </div>
+    }
           {this.state.view === 'home' &&
             <div className=''>
               <button

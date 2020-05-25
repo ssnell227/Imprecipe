@@ -41,6 +41,11 @@
   z-index: 5;
 }
 
+.header-title {
+  position: absolute;
+  left: 150px;
+}
+
 .header-nav {
   float: right;
   margin-top: 10px;
@@ -90,6 +95,8 @@ textarea {
   border-radius: 5px 0px 5px 0px;
   margin-right: 2px;
   color: black;
+  font-family: sans-serif;
+  font-size: 16px;
 }
 
 ::placeholder {

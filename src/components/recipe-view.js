@@ -181,7 +181,7 @@ class RecipeView extends Component {
             const { isEditing } = this.state
 
             return (
-                <div className='recipe-view'>
+                <section className='recipe-view'>
                     {this.state.isEditing ? <input size={name.length} className='name-input' name='name' placeholder={name} onChange={this.handleChange}></input> : <h2 className='name'>{name}</h2>}
                     <br />
                     <button className='nav-button' onClick={this.toggleEdit}>{this.state.isEditing ? 'Cancel' : 'Edit'}</button>
@@ -208,7 +208,7 @@ class RecipeView extends Component {
                             {isEditing && <button name='directions' onClick={this.addInput}>Add Directions</button>}
                         </div>
                     </div>
-                </div>
+                </section>
             )
         }
     }

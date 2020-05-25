@@ -47,8 +47,6 @@
   position: absolute;
   top: 20px;
   right: 10px;
-  z-index: 6;
-  transform: none;
 }
 
 .hamburger {
@@ -253,6 +251,8 @@ li {
   );
   border: 5px solid darksalmon;
   border-radius: 0px 20px 20px;
+
+  transform: none;
 
   transition: transform 300ms;
   }

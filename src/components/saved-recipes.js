@@ -18,11 +18,11 @@ class SavedRecipes extends Component {
             return <button className='nav-button' name='recipeView' key={`allRecipes-${index}`} onClick={this.handleClick}>{item.name}</button>
         })
         return (
-            <div className='savedRecipes'>
+            <section className='savedRecipes'>
                 <h3 className='secondary-title'>Saved Recipes</h3>
                 <br></br>
                 {allRecipesMap}
-            </div>
+            </section>
         )
     }
 }

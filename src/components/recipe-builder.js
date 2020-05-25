@@ -172,7 +172,7 @@ class RecipeBuilder extends Component {
             </div>
         })
         return (
-            <div className='recipeBuilder'>
+            <section className='recipeBuilder'>
 
                 {this.state.stage === 1 && <div>
                     <h3 className='prompt'>What's your recipe's name?</h3>
@@ -207,7 +207,7 @@ class RecipeBuilder extends Component {
                 <button name='recipeView' onClick={this.handleCreateRecipe} className='save-button'>Save Recipe</button>
                 </div>}
 
-            </div>
+            </section>
         )
     }
 }

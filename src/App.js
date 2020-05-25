@@ -88,11 +88,11 @@ class App extends Component {
         menuClass={this.state.menu ? 'header-nav shown' : 'header-nav'} 
         switchView={this.switchView} 
         />
-        <div className="App">
-          <main>
+        <main className="App">
+          <div>
             <h1>Imprescipe!</h1>
             {this.state.view === 'home' && <h3 className='secondary-title'>A recipe builder to standardize and organize your recipes</h3>}
-          </main>
+          </div>
           {this.state.view === 'home' &&
             <div className=''>
               <button
@@ -134,7 +134,7 @@ class App extends Component {
               deleteRecipe={this.deleteRecipe}
               editRecipe={this.editRecipe}
             />}
-        </div>
+        </main>
       </div>
     );
   }

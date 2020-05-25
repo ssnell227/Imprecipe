@@ -8,6 +8,8 @@ import Header from './components/header'
 
 import './App.css';
 
+const apiKey = '0f84e73185af44d584bf2ac0c8a5e92a'
+
 class App extends Component {
   constructor(props) {
     super(props)
@@ -16,6 +18,7 @@ class App extends Component {
       currentRecipe: {},
       view: 'home',
       menu: false,
+      autofill: []
     }
     this.switchView = this.switchView.bind(this)
     this.setCurrentRecipe = this.setCurrentRecipe.bind(this)
@@ -24,9 +27,10 @@ class App extends Component {
     this.editRecipe = this.editRecipe.bind(this)
     this.deleteRecipe = this.deleteRecipe.bind(this)
     this.toggleMenu = this.toggleMenu.bind(this)
+    this.getIngredientAutofill = this.getIngredientAutofill.bind(this)
   }
 
-  toggleMenu () {
+  toggleMenu() {
     this.setState({
       menu: !this.state.menu
     })
@@ -44,7 +48,7 @@ class App extends Component {
     })
   }
 
-  // axios requests
+  // axios requests for server
   getAllRecipes() {
     Axios.get('/api/recipes/')
       .then(res => this.setState({ allRecipes: res.data }))
@@ -75,6 +79,14 @@ class App extends Component {
       .catch(err => console.log(err))
   }
 
+  //spoonactular requests
+  getIngredientAutofill(input) {
+    if (input) {
+      Axios.get(`https://api.spoonacular.com/food/ingredients/autocomplete?query=${input}&number=5&apiKey=${apiKey}`)
+        .then(res => this.setState({ autofill: res.data }))
+    }
+  }
+
   componentDidMount() {
     this.getAllRecipes()
   }
@@ -83,10 +95,10 @@ class App extends Component {
   render() {
     return (
       <div className='everything'>
-        <Header 
-        toggleMenu={this.toggleMenu} 
-        menuClass={this.state.menu ? 'header-nav shown' : 'header-nav'} 
-        switchView={this.switchView} 
+        <Header
+          toggleMenu={this.toggleMenu}
+          menuClass={this.state.menu ? 'header-nav shown' : 'header-nav'}
+          switchView={this.switchView}
         />
         <main className="App">
           <div>
@@ -110,6 +122,8 @@ class App extends Component {
           {/* recipe builder component */}
           {this.state.view === 'recipeBuilder' &&
             <RecipeBuilder
+              autoFillArray={this.state.autofill}
+              getAutoFill={this.getIngredientAutofill}
               switchView={this.switchView}
               setCurrentRecipe={this.setCurrentRecipe}
               createNewRecipe={this.createNewRecipe}
@@ -128,6 +142,8 @@ class App extends Component {
           {/* individual recipe component */}
           {this.state.view === 'recipeView' &&
             <RecipeView
+              autoFillArray={this.state.autofill}
+              getAutoFill={this.getIngredientAutofill}
               switchView={this.switchView}
               currentRecipe={this.state.currentRecipe}
               setCurrentRecipe={this.setCurrentRecipe}

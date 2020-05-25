@@ -17,6 +17,7 @@ class RecipeBuilder extends Component {
         this.changeName = this.changeName.bind(this)
         this.nextStage = this.nextStage.bind(this)
         this.prevStage = this.prevStage.bind(this)
+        this.handleAutofillInputs = this.handleAutofillInputs.bind(this)
     }
 
     nextStage() {
@@ -120,6 +121,11 @@ class RecipeBuilder extends Component {
         }
     }
 
+    handleAutofillInputs (e) {
+        this.props.getAutoFill(e.target.value)
+        this.handleChange(e)
+    }
+
     render() {
         const { equipment, ingredients, directions } = this.state
 
@@ -138,12 +144,16 @@ class RecipeBuilder extends Component {
         const ingredientsMap = ingredients.map((item, index) => {
             return <div key={`ingredients-${index}`} className='ingredients-item'>
                 <input
-                    onChange={this.handleChange}
+                    onChange={this.handleAutofillInputs}
                     name='ingredients'
                     placeholder='name'
                     value={this.state.ingredients[index].name}
                     step={index}
+                    list={`autofill-${index}`}
                 ></input>
+                <datalist id={`autofill-${index}`}>
+        {this.props.autoFillArray.map((item, optionIndex) => <option value={item.name} key={`option-${optionIndex}`}/>)}
+                </datalist>
 
                 <input
                     onChange={this.handleChange}
@@ -176,7 +186,7 @@ class RecipeBuilder extends Component {
 
                 {this.state.stage === 1 && <div>
                     <h3 className='prompt'>What's your recipe's name?</h3>
-                    <input class='name-input' onChange={this.changeName}></input>
+                    <input className='name-input' onChange={this.changeName}></input>
                     <br/>
                     <button onClick={this.nextStage}>Next</button>
                 </div>}

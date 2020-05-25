@@ -10,6 +10,7 @@ class RecipeBuilder extends Component {
             directions: ['',],
             stage: 1
         }
+        //update state
         this.addInput = this.addInput.bind(this)
         this.deleteInput = this.deleteInput.bind(this)
         this.handleChange = this.handleChange.bind(this)
@@ -17,18 +18,20 @@ class RecipeBuilder extends Component {
         this.changeName = this.changeName.bind(this)
         this.nextStage = this.nextStage.bind(this)
         this.prevStage = this.prevStage.bind(this)
+
+        //trigger axios
         this.handleAutofillInputs = this.handleAutofillInputs.bind(this)
     }
 
     nextStage() {
         let { stage } = this.state
         console.log(stage)
-        stage < 4 && stage ++
+        stage < 4 && stage++
         this.setState({ stage })
     }
     prevStage() {
         let { stage } = this.state
-        stage > 1 && stage --
+        stage > 1 && stage--
         this.setState({ stage })
     }
 
@@ -121,7 +124,7 @@ class RecipeBuilder extends Component {
         }
     }
 
-    handleAutofillInputs (e) {
+    handleAutofillInputs(e) {
         this.props.getAutoFill(e.target.value)
         this.handleChange(e)
     }
@@ -138,7 +141,12 @@ class RecipeBuilder extends Component {
                     step={index}
                     value={this.state.equipment[index]}
                 ></input>
-                <button className='delete-button' data-index={index} name='equipment' onClick={this.deleteInput}>X</button>
+                <button
+                    className='delete-button'
+                    data-index={index}
+                    name='equipment'
+                    onClick={this.deleteInput}
+                >X</button>
             </div>
         })
         const ingredientsMap = ingredients.map((item, index) => {
@@ -152,7 +160,10 @@ class RecipeBuilder extends Component {
                     list={`autofill-${index}`}
                 ></input>
                 <datalist id={`autofill-${index}`}>
-        {this.props.autoFillArray.map((item, optionIndex) => <option value={item.name} key={`option-${optionIndex}`}/>)}
+                    {this.props.autoFillArray.map((item, optionIndex) => <option
+                        value={item.name}
+                        key={`option-${optionIndex}`}
+                    />)}
                 </datalist>
 
                 <input
@@ -162,7 +173,12 @@ class RecipeBuilder extends Component {
                     value={this.state.ingredients[index].amount}
                     step={index}
                 ></input>
-                <button className='delete-button' name='ingredients' onClick={this.deleteInput} data-index={index}>X</button>
+                <button
+                    className='delete-button'
+                    name='ingredients'
+                    onClick={this.deleteInput}
+                    data-index={index}
+                >X</button>
 
             </div>
         })
@@ -177,7 +193,12 @@ class RecipeBuilder extends Component {
                     value={this.state.directions[index]}
                     key={`directions-${index}`}
                 ></textarea>
-                <button className='delete-button' name='directions' onClick={this.deleteInput} data-index={index}>X</button>
+                <button 
+                className='delete-button' 
+                name='directions' 
+                onClick={this.deleteInput} 
+                data-index={index}
+                >X</button>
 
             </div>
         })
@@ -187,34 +208,44 @@ class RecipeBuilder extends Component {
                 {this.state.stage === 1 && <div>
                     <h3 className='prompt'>What's your recipe's name?</h3>
                     <input className='name-input' onChange={this.changeName}></input>
-                    <br/>
+                    <br />
                     <button onClick={this.nextStage}>Next</button>
                 </div>}
 
                 {this.state.stage === 2 && <div className='equipment'>
-                <h3 className='prompt'>Any special equipment?</h3>
+                    <h3 className='prompt'>Any special equipment?</h3>
                     {equipmentMap}
                     <button onClick={this.prevStage}>Back</button>
-                    <button onClick={this.addInput} name='equipment'>Add equipment</button>
+                    <button onClick={this.addInput} 
+                    name='equipment'
+                    >Add equipment</button>
                     <button onClick={this.nextStage}>Next</button>
                 </div>}
 
                 {this.state.stage === 3 && <div className='ingredients'>
-                <h3 className='prompt'>Time to add some ingredients.  Don't forget units!</h3>
+                    <h3 className='prompt'>Time to add some ingredients.  Don't forget units!</h3>
                     {ingredientsMap}
                     <button onClick={this.prevStage}>Back</button>
-                    <button onClick={this.addInput} name='ingredients'>Add ingredient</button>
+                    <button onClick={this.addInput} 
+                    name='ingredients'
+                    >Add ingredient</button>
                     <button onClick={this.nextStage}>Next</button>
                 </div>}
 
                 {this.state.stage === 4 && <div className='directions'>
-                <h3 className='prompt'>Alright, now how do you make it?</h3>
+                    <h3 className='prompt'>Alright, now how do you make it?</h3>
                     {directionsMap}
-                    <button onClick={this.addInput} name='directions'>Add direction</button>
-                    <br/>
+                    <button onClick={this.addInput} 
+                    name='directions'
+                    >Add direction</button>
+                    <br />
                     <button onClick={this.prevStage}>Back</button>
-                    <br/>
-                <button name='recipeView' onClick={this.handleCreateRecipe} className='save-button'>Save Recipe</button>
+                    <br />
+                    <button 
+                    name='recipeView' 
+                    onClick={this.handleCreateRecipe} 
+                    className='save-button'
+                    >Save Recipe</button>
                 </div>}
 
             </section>

@@ -20,16 +20,21 @@ class App extends Component {
       menu: false,
       autofill: []
     }
+    //navigation
     this.switchView = this.switchView.bind(this)
+    this.toggleMenu = this.toggleMenu.bind(this)
+    //set local data
     this.setCurrentRecipe = this.setCurrentRecipe.bind(this)
+    //server requests
     this.getAllRecipes = this.getAllRecipes.bind(this)
     this.createNewRecipe = this.createNewRecipe.bind(this)
     this.editRecipe = this.editRecipe.bind(this)
     this.deleteRecipe = this.deleteRecipe.bind(this)
-    this.toggleMenu = this.toggleMenu.bind(this)
+    //api requests
     this.getIngredientAutofill = this.getIngredientAutofill.bind(this)
   }
 
+  //navigation
   toggleMenu() {
     this.setState({
       menu: !this.state.menu
@@ -42,13 +47,14 @@ class App extends Component {
     })
   }
 
+  //set local data
   setCurrentRecipe(recipeObj) {
     this.setState({
       currentRecipe: recipeObj
     })
   }
 
-  // axios requests for server
+  //server requests
   getAllRecipes() {
     Axios.get('/api/recipes/')
       .then(res => this.setState({ allRecipes: res.data }))
@@ -103,7 +109,10 @@ class App extends Component {
         <main className="App">
           <div>
             <h1>Imprescipe!</h1>
-            {this.state.view === 'home' && <h3 className='secondary-title'>A recipe builder to standardize and organize your recipes</h3>}
+            {this.state.view === 'home' && 
+            <h3 
+            className='secondary-title'
+            >A recipe builder to standardize and organize your recipes</h3>}
           </div>
           {this.state.view === 'home' &&
             <div className=''>

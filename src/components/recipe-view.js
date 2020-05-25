@@ -11,18 +11,26 @@ class RecipeView extends Component {
             ingredients: ['',],
             directions: ['',],
         }
+        //update state
         this.toggleEdit = this.toggleEdit.bind(this)
-        this.generateMaps = this.generateMaps.bind(this)
         this.addInput = this.addInput.bind(this)
         this.deleteInput = this.deleteInput.bind(this)
         this.populateState = this.populateState.bind(this)
-        this.handleEditRecipe = this.handleEditRecipe.bind(this)
         this.handleChange = this.handleChange.bind(this)
+
+        //trigger axios
+        this.handleEditRecipe = this.handleEditRecipe.bind(this)
         this.handleDelete = this.handleDelete.bind(this)
         this.handleAutofillInputs = this.handleAutofillInputs.bind(this)
+
+        //render functions
+        this.generateMaps = this.generateMaps.bind(this)
+
+        //grouped functions 
+        this.handleCancel = this.handleCancel.bind(this)
     }
 
-
+    //update state
     toggleEdit() {
         this.setState({
             isEditing: !this.state.isEditing
@@ -70,16 +78,6 @@ class RecipeView extends Component {
         })
     }
 
-    handleEditRecipe(e) {
-        const { id, name, equipment, ingredients, directions } = this.state
-
-        const recipe = { id, name, equipment, ingredients, directions }
-        console.log(recipe)
-        this.props.setCurrentRecipe(recipe)
-        this.props.editRecipe(recipe)
-        this.props.switchView(e)
-        this.toggleEdit()
-    }
 
     handleChange(e) {
         let inputs = []
@@ -104,7 +102,7 @@ class RecipeView extends Component {
             inputs[e.target.step].amount = e.target.value
         }
 
-        console.log(inputs)
+
         this.setState({
             [inputsKey]: inputs
         })
@@ -116,11 +114,28 @@ class RecipeView extends Component {
         for (let key in currentRecipe) {
             this.setState({ [key]: currentRecipe[key] })
         }
+        console.log('firing')
+    }
+
+    handleEditRecipe(e) {
+        const { id, name, equipment, ingredients, directions } = this.state
+
+        const recipe = { id, name, equipment, ingredients, directions }
+        console.log(recipe)
+        this.props.setCurrentRecipe(recipe)
+        this.props.editRecipe(recipe)
+        this.props.switchView(e)
+        this.toggleEdit()
     }
 
     handleDelete(e) {
         this.props.deleteRecipe(this.state.id)
         this.props.switchView(e)
+    }
+
+    handleAutofillInputs(e) {
+        this.handleChange(e)
+        this.props.getAutoFill(e.target.value)
     }
 
     generateMaps() {
@@ -134,8 +149,19 @@ class RecipeView extends Component {
                         </div>
                     } else {
                         return <div key={`${key}-${index}`}>
-                            <input size={item.length} step={index} name={key} onChange={this.handleChange} placeholder={item} ></input>
-                            <button className='delete-button' name={key} data-index={index} onClick={this.deleteInput}>X</button>
+                            <input
+                                size={item.length}
+                                step={index}
+                                name={key}
+                                onChange={this.handleChange}
+                                placeholder={item}
+                            ></input>
+                            <button
+                                className='delete-button'
+                                name={key}
+                                data-index={index}
+                                onClick={this.deleteInput}
+                            >X</button>
                         </div>
                     }
                 }))
@@ -147,8 +173,19 @@ class RecipeView extends Component {
                         </div>
                     } else {
                         return <div key={`${key}-${index}`}>
-                            <textarea cols={50} rows={item.length > 140 ? Math.ceil(item.length / 50) : 2} data-index={index} name='directions' onChange={this.handleChange} placeholder={item} ></textarea>
-                            <button className='delete-button' name={key} data-index={index} onClick={this.deleteInput}>X</button>
+                            <textarea
+                                cols={50}
+                                rows={item.length > 140 ? Math.ceil(item.length / 50) : 2}
+                                data-index={index}
+                                name='directions'
+                                onChange={this.handleChange}
+                                placeholder={item}
+                            ></textarea>
+                            <button
+                                className='delete-button'
+                                name={key}
+                                data-index={index}
+                                onClick={this.deleteInput}>X</button>
                         </div>
                     }
                 }))
@@ -162,20 +199,34 @@ class RecipeView extends Component {
                         </div>
                     } else {
                         return <div key={`${key}-${index}`}>
-                            <input 
-                            list={`autofill-${index}`} 
-                            size={item.name.length || 10} 
-                            step={index} 
-                            name='ingredients' 
-                            data-name='name' 
-                            onChange={this.handleAutofillInputs} 
-                            placeholder={item.name}
+                            <input
+                                list={`autofill-${index}`}
+                                size={item.name.length || 10}
+                                step={index}
+                                name='ingredients'
+                                data-name='name'
+                                onChange={this.handleAutofillInputs}
+                                placeholder={item.name}
                             ></input>
                             <datalist id={`autofill-${index}`}>
-                                {this.props.autoFillArray.map((item, optionIndex) => <option value={item.name} key={`option-${optionIndex}`} />)}
+                                {this.props.autoFillArray.map((item, optionIndex) => <option
+                                    value={item.name}
+                                    key={`option-${optionIndex}`}
+                                />)}
                             </datalist>
-                            <input size={5} step={index} name='ingredients' data-name='amount' onChange={this.handleChange} placeholder={item.amount}></input>
-                            <button className='delete-button' name={key} data-index={index} onClick={this.deleteInput}>X</button>
+                            <input 
+                            size={5} 
+                            step={index} 
+                            name='ingredients' 
+                            data-name='amount' 
+                            onChange={this.handleChange} 
+                            placeholder={item.amount}
+                            ></input>
+                            <button 
+                            className='delete-button' 
+                            name={key} 
+                            data-index={index} 
+                            onClick={this.deleteInput}>X</button>
                         </div>
                     }
                 }))
@@ -184,14 +235,16 @@ class RecipeView extends Component {
         return arrayOfMaps
     }
 
-    handleAutofillInputs (e) {
-        this.handleChange(e)
-        this.props.getAutoFill(e.target.value)
+    handleCancel () {
+        this.populateState()
+        this.toggleEdit()
     }
 
     componentDidMount() {
         this.populateState()
     }
+
+    
 
     render() {
         const { name } = this.props.currentRecipe
@@ -199,30 +252,59 @@ class RecipeView extends Component {
 
         return (
             <section className='recipe-view'>
-                {this.state.isEditing ? <input size={name.length} className='name-input' name='name' placeholder={name} onChange={this.handleChange}></input> : <h2 className='name'>{name}</h2>}
+                {this.state.isEditing ? <input 
+                size={name.length} 
+                className='name-input' 
+                name='name' 
+                placeholder={name} 
+                onChange={this.handleChange}
+                ></input> : <h2 className='name'>{name}</h2>}
                 <br />
-                <button className='nav-button' onClick={this.toggleEdit}>{this.state.isEditing ? 'Cancel' : 'Edit'}</button>
-                {this.state.isEditing && <button className='nav-button' name='recipeView' onClick={this.handleEditRecipe}>Save</button>}
-                {this.state.isEditing && <button className='nav-button' name='home' onClick={this.handleDelete}>Delete</button>}
+
+                <button 
+                className='nav-button' 
+                onClick={this.handleCancel}
+                >{this.state.isEditing ? 'Cancel' : 'Edit'}</button>
+
+                {this.state.isEditing && <button 
+                className='nav-button' 
+                name='recipeView' 
+                onClick={this.handleEditRecipe}
+                >Save</button>}
+
+                {this.state.isEditing && <button 
+                className='nav-button' 
+                name='home' 
+                onClick={this.handleDelete}
+                >Delete</button>}
                 <div className='content'>
                     <div className='left-content'>
                         <div className='equipment-display'>
                             <h2>Equipment</h2>
                             {this.generateMaps()[0]}
-                            {isEditing && <button name='equipment' onClick={this.addInput}>Add equipment</button>}
+                            {isEditing && <button 
+                            name='equipment' 
+                            onClick={this.addInput}
+                            >Add equipment</button>}
                         </div>
 
                         <div className='ingredients-display'>
                             <h2>Ingredients</h2>
                             {this.generateMaps()[1]}
-                            {isEditing && <button name='ingredients' onClick={this.addInput}>Add Ingredient</button>}
+                            {isEditing && <button 
+                            name='ingredients' 
+                            onClick={this.addInput}
+                            >Add Ingredient</button>}
                         </div>
                     </div>
 
                     <div className='directions-display'>
                         <h2>Directions</h2>
                         <ol >{this.generateMaps()[2]}</ol>
-                        {isEditing && <button name='directions' onClick={this.addInput}>Add Directions</button>}
+                        {isEditing && <button 
+                        name='directions' 
+                        onClick={this.addInput}
+                        >Add Directions</button>}
                     </div>
                 </div>
             </section>

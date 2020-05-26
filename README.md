@@ -28,5 +28,6 @@
 
 
 ### Diagrams
+    -original proposal component map    
 
 <img src='./diagram.svg'>

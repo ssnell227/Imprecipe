@@ -4,8 +4,10 @@
 
 ## Functionality
     -The landing page will provide you with the option of viewing previous recipes or starting a new recipe wizard
-    -The saved recipes page will give a list of saved recipes to view.  The following view page will display the recipe by mapping the values of the object to a template.  This view will display edit and delete buttons as well
-    -The recipe wizard will run you through a series of forms with suggested inputs, saving all inputs to a currentRecipe object in App’s state.  Once finished, the recipe will prompt you to save the recipe
+    -The saved recipes page will give a list of saved recipes to view.  The following view page will display the recipe
+     by mapping the values of the object to a template.  This view will display edit and delete buttons as well.
+    -The recipe wizard will run you through a series of forms with suggested inputs, saving all inputs to a currentRecipe
+     object in App’s state.  Once finished, the recipe will prompt you to save the recipe
 
 ## Endpoints
     -local endpoints

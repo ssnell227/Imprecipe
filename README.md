@@ -23,3 +23,8 @@
     -Saved recipes (stateful)
     -Recipe view (stateful)
     -Recipe wizard (stateful)
+
+
+### Diagrams
+
+<img src='./diagram.svg'>

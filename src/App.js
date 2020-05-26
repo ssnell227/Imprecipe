@@ -162,6 +162,9 @@ class App extends Component {
               editRecipe={this.editRecipe}
             />}
         </main>
+        <footer>
+          
+        </footer>
       </div>
     );
   }
